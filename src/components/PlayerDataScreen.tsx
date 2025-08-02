@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import angelSilhouette from "@/assets/angel-silhouette.jpg";
-import devilSilhouette from "@/assets/devil-silhouette.jpg";
+import seductiveAngel from "@/assets/seductive-angel.jpg";
+import seductiveDevil from "@/assets/seductive-devil.jpg";
 
 interface PlayerDataScreenProps {
   onSubmit: (name: string, phone: string) => void;
@@ -47,11 +47,11 @@ export const PlayerDataScreen = ({ onSubmit, loading }: PlayerDataScreenProps) =
     <div className="min-h-screen bg-gradient-mystical flex items-center justify-center p-4">
       <div className="w-full max-w-md relative">
         {/* Background decorations */}
-        <div className="absolute -left-20 top-0 opacity-20">
-          <img src={angelSilhouette} alt="" className="w-32 h-32 object-contain" />
+        <div className="absolute -left-20 top-0 opacity-30 animate-pulse">
+          <img src={seductiveAngel} alt="" className="w-32 h-32 object-contain" />
         </div>
-        <div className="absolute -right-20 bottom-0 opacity-20">
-          <img src={devilSilhouette} alt="" className="w-32 h-32 object-contain" />
+        <div className="absolute -right-20 bottom-0 opacity-30 animate-pulse">
+          <img src={seductiveDevil} alt="" className="w-32 h-32 object-contain" />
         </div>
         
         <Card className="bg-gradient-card border-border shadow-mystical animate-fade-in-up">

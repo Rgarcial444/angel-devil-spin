@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import marketingCards from "@/assets/marketing-cards.jpg";
+import attractiveCards from "@/assets/attractive-cards.jpg";
 
 interface GameScreenProps {
   onCardSelected: (cardIndex: number) => void;
@@ -44,12 +44,12 @@ export const GameScreen = ({ onCardSelected, playerName }: GameScreenProps) => {
           <div className="h-1 w-32 mx-auto bg-gradient-to-r from-saint via-primary to-devil rounded-full"></div>
         </div>
 
-        {/* Marketing cards image below */}
+        {/* Attractive cards image below */}
         <div className="relative mt-8">
           <img 
-            src={marketingCards} 
-            alt="Cartas del juego" 
-            className="w-full max-w-2xl mx-auto rounded-lg opacity-40 shadow-mystical"
+            src={attractiveCards} 
+            alt="Cartas mágicas del destino" 
+            className="w-full max-w-3xl mx-auto rounded-lg opacity-60 shadow-mystical animate-pulse"
           />
         </div>
 

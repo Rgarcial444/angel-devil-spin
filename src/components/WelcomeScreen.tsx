@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import gameLogo from "@/assets/game-logo.jpg";
+import epicBattle from "@/assets/epic-battle.jpg";
 
 interface WelcomeScreenProps {
   onStartGame: () => void;
@@ -9,12 +9,12 @@ export const WelcomeScreen = ({ onStartGame }: WelcomeScreenProps) => {
   return (
     <div className="min-h-screen bg-gradient-mystical flex flex-col items-center justify-center p-6 text-center">
       <div className="max-w-md w-full space-y-8 animate-fade-in-up">
-        {/* Logo */}
+        {/* Epic battle background */}
         <div className="mb-8">
           <img 
-            src={gameLogo} 
-            alt="Sant@ o Diabl@" 
-            className="w-full max-w-sm mx-auto rounded-lg shadow-mystical"
+            src={epicBattle} 
+            alt="Sant@ vs Diabl@" 
+            className="w-full max-w-2xl mx-auto rounded-lg shadow-mystical animate-fade-in"
           />
         </div>
         

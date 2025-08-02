@@ -68,24 +68,19 @@ export class GameService {
     return newStats;
   }
 
-  // Generate random winner position (14+ or any position once a week)
+  // Generate fixed winner positions (10 and 11)
   static generateRandomWinnerPosition(excludePosition?: number): number {
-    const isWeeklySpecial = Math.random() < 1/7; // 1/7 chance for weekly special
+    // Fixed positions: 10 and 11
+    const positions = [10, 11];
     
-    if (isWeeklySpecial) {
-      let position;
-      do {
-        position = Math.floor(Math.random() * 50) + 1; // 1-50
-      } while (position === excludePosition);
-      return position;
+    if (excludePosition === 10) {
+      return 11;
+    } else if (excludePosition === 11) {
+      return 10;
     }
     
-    // Normal case: position 14+
-    let position;
-    do {
-      position = Math.floor(Math.random() * 37) + 14; // 14-50
-    } while (position === excludePosition);
-    return position;
+    // If no exclusion, randomly pick between 10 and 11
+    return positions[Math.floor(Math.random() * positions.length)];
   }
 
   // Play game and determine result
