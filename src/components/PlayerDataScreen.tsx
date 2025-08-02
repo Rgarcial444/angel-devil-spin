@@ -17,7 +17,7 @@ export const PlayerDataScreen = ({ onSubmit, loading }: PlayerDataScreenProps) =
   const [errors, setErrors] = useState({ name: "", phone: "" });
 
   const validatePhone = (phone: string) => {
-    const phoneRegex = /^[0-9]{8,15}$/;
+    const phoneRegex = /^[0-9]{10,15}$/;
     return phoneRegex.test(phone.replace(/\s/g, ""));
   };
 
