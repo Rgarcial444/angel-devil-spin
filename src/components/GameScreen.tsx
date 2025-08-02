@@ -13,7 +13,7 @@ export const GameScreen = ({ onCardSelected, playerName }: GameScreenProps) => {
   const [isRevealing, setIsRevealing] = useState(false);
 
   const cards = [
-    { id: 1, title: "Carta del Destino", icon: "🎭" },
+    { id: 1, title: "Carta del De", icon: "🎭" },
     { id: 2, title: "Carta del Misterio", icon: "🔮" },
     { id: 3, title: "Carta del Poder", icon: "⚡" }
   ];
