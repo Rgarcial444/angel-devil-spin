@@ -13,9 +13,9 @@ export const GameScreen = ({ onCardSelected, playerName }: GameScreenProps) => {
   const [isRevealing, setIsRevealing] = useState(false);
 
   const cards = [
-    { id: 1, title: "Carta del De", icon: "🎭" },
-    { id: 2, title: "Carta del Misterio", icon: "🔮" },
-    { id: 3, title: "Carta del Poder", icon: "⚡" }
+    { id: 1, title: "La Tentadora", icon: "😈" },
+    { id: 2, title: "El Oráculo", icon: "🔮" },
+    { id: 3, title: "La Ascendente", icon: "✨" }
   ];
 
   const handleCardClick = (cardIndex: number) => {
@@ -42,15 +42,6 @@ export const GameScreen = ({ onCardSelected, playerName }: GameScreenProps) => {
             Selecciona una carta y descubre si serás Sant@ o Diabl@
           </p>
           <div className="h-1 w-32 mx-auto bg-gradient-to-r from-saint via-primary to-devil rounded-full"></div>
-        </div>
-
-        {/* Attractive cards image below */}
-        <div className="relative mt-8">
-          <img 
-            src={attractiveCards} 
-            alt="Cartas mágicas del destino" 
-            className="w-full max-w-3xl mx-auto rounded-lg opacity-60 shadow-mystical animate-pulse"
-          />
         </div>
 
         {/* Game cards */}
@@ -85,6 +76,15 @@ export const GameScreen = ({ onCardSelected, playerName }: GameScreenProps) => {
               </CardContent>
             </Card>
           ))}
+        </div>
+
+        {/* Attractive cards image below */}
+        <div className="relative mt-8">
+          <img 
+            src={attractiveCards} 
+            alt="Cartas mágicas del destino" 
+            className="w-full max-w-3xl mx-auto rounded-lg opacity-60 shadow-mystical animate-pulse"
+          />
         </div>
 
         {/* Instructions */}

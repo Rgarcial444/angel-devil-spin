@@ -5,16 +5,30 @@ import { PlayerDataScreen } from "./PlayerDataScreen";
 import { GameScreen } from "./GameScreen";
 import { ResultScreen } from "./ResultScreen";
 import { AlreadyPlayedScreen } from "./AlreadyPlayedScreen";
+import { AdminLogin } from "./AdminLogin";
+import { AdminScreen } from "./AdminScreen";
 import { GameService } from "@/services/gameService";
 import { Player, GameResult } from "@/types/game";
 
-type GameState = 'welcome' | 'playerData' | 'game' | 'result' | 'alreadyPlayed';
+type GameState = 'welcome' | 'playerData' | 'game' | 'result' | 'alreadyPlayed' | 'adminLogin' | 'admin';
 
 export const SantDiablGame = () => {
   const [gameState, setGameState] = useState<GameState>('welcome');
   const [player, setPlayer] = useState<Player | null>(null);
   const [gameResult, setGameResult] = useState<GameResult | null>(null);
   const [loading, setLoading] = useState(false);
+  
+  // Check for secret admin access on triple click
+  const [clickCount, setClickCount] = useState(0);
+  
+  const handleTitleClick = () => {
+    setClickCount(prev => prev + 1);
+    setTimeout(() => setClickCount(0), 1000);
+    
+    if (clickCount === 2) { // Third click (0, 1, 2)
+      setGameState('adminLogin');
+    }
+  };
 
   const handleStartGame = () => {
     setGameState('playerData');
@@ -84,10 +98,18 @@ export const SantDiablGame = () => {
     setGameState('welcome');
   };
 
+  const handleAdminLogin = () => {
+    setGameState('admin');
+  };
+
+  const handleAdminExit = () => {
+    setGameState('welcome');
+  };
+
   // Render current screen based on game state
   switch (gameState) {
     case 'welcome':
-      return <WelcomeScreen onStartGame={handleStartGame} />;
+      return <WelcomeScreen onStartGame={handleStartGame} onTitleClick={handleTitleClick} />;
     
     case 'playerData':
       return (
@@ -121,7 +143,22 @@ export const SantDiablGame = () => {
         />
       );
     
+    case 'adminLogin':
+      return (
+        <AdminLogin 
+          onLogin={handleAdminLogin}
+          onCancel={handleGoBack}
+        />
+      );
+    
+    case 'admin':
+      return (
+        <AdminScreen 
+          onExit={handleAdminExit}
+        />
+      );
+    
     default:
-      return <WelcomeScreen onStartGame={handleStartGame} />;
+      return <WelcomeScreen onStartGame={handleStartGame} onTitleClick={handleTitleClick} />;
   }
 };
