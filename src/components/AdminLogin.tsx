@@ -21,8 +21,8 @@ export const AdminLogin = ({ onLogin, onCancel }: AdminLoginProps) => {
       return;
     }
 
-    // Regular admin credentials (you can customize these)
-    if (username === "admin" && password === "del pino") {
+    // Regular admin credentials
+    if (username === "ector" && password === "11111") {
       toast.success("Acceso de administrador concedido");
       onLogin();
       return;

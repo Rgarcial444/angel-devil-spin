@@ -109,7 +109,7 @@ export const SantDiablGame = () => {
   // Render current screen based on game state
   switch (gameState) {
     case 'welcome':
-      return <WelcomeScreen onStartGame={handleStartGame} onTitleClick={handleTitleClick} />;
+      return <WelcomeScreen onStartGame={handleStartGame} onTitleClick={handleTitleClick} onAdminAccess={() => setGameState('adminLogin')} />;
     
     case 'playerData':
       return (

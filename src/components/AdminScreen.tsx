@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 
 interface AdminScreenProps {
@@ -11,15 +12,55 @@ interface AdminScreenProps {
 export const AdminScreen = ({ onExit }: AdminScreenProps) => {
   const [saintPosition, setSaintPosition] = useState<number>(10);
   const [devilPosition, setDevilPosition] = useState<number>(11);
+  const [autoMode, setAutoMode] = useState<boolean>(true);
+  const [lastActivity, setLastActivity] = useState<number>(Date.now());
 
-  const handleSetPositions = () => {
+  // Auto-reset after 5 minutes of inactivity
+  useEffect(() => {
+    const checkInactivity = () => {
+      if (Date.now() - lastActivity > 300000) { // 5 minutes
+        if (!autoMode) {
+          setAutoMode(true);
+          generateRandomPositions();
+          toast.info("Posiciones reiniciadas automáticamente por inactividad");
+        }
+      }
+    };
+
+    const interval = setInterval(checkInactivity, 60000); // Check every minute
+    return () => clearInterval(interval);
+  }, [lastActivity, autoMode]);
+
+  // Update activity timestamp on any interaction
+  const updateActivity = () => {
+    setLastActivity(Date.now());
+  };
+
+  const generateRandomPositions = () => {
+    updateActivity();
+    let newSaint, newDevil;
+    do {
+      newSaint = Math.floor(Math.random() * 20) + 1;
+      newDevil = Math.floor(Math.random() * 20) + 1;
+    } while (newSaint === newDevil);
+    
+    setSaintPosition(newSaint);
+    setDevilPosition(newDevil);
+    
+    if (!autoMode) {
+      handleSetPositions(newSaint, newDevil);
+    }
+  };
+
+  const handleSetPositions = (saint = saintPosition, devil = devilPosition) => {
+    updateActivity();
     // Validate positions
-    if (saintPosition === devilPosition) {
+    if (saint === devil) {
       toast.error("Las posiciones deben ser diferentes");
       return;
     }
 
-    if (saintPosition < 1 || devilPosition < 1) {
+    if (saint < 1 || devil < 1) {
       toast.error("Las posiciones deben ser mayor a 0");
       return;
     }
@@ -31,8 +72,8 @@ export const AdminScreen = ({ onExit }: AdminScreenProps) => {
     const newStats = {
       date: today,
       total_players: 0,
-      saint_winner_position: saintPosition,
-      devil_winner_position: devilPosition,
+      saint_winner_position: saint,
+      devil_winner_position: devil,
       saint_winner_found: false,
       devil_winner_found: false
     };
@@ -41,7 +82,16 @@ export const AdminScreen = ({ onExit }: AdminScreenProps) => {
     toast.success("Posiciones ganadoras actualizadas");
   };
 
+  const handleModeChange = (checked: boolean) => {
+    updateActivity();
+    setAutoMode(checked);
+    if (checked) {
+      generateRandomPositions();
+    }
+  };
+
   const handleResetGame = () => {
+    updateActivity();
     // Clear all localStorage data related to the game
     const keys = Object.keys(localStorage);
     keys.forEach(key => {
@@ -64,40 +114,77 @@ export const AdminScreen = ({ onExit }: AdminScreenProps) => {
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-foreground">Configurar Posiciones Ganadoras</h3>
               
-              <div className="space-y-3">
-                <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-1">
-                    Posición Sant@ (15% descuento)
-                  </label>
-                  <Input
-                    type="number"
-                    value={saintPosition}
-                    onChange={(e) => setSaintPosition(Number(e.target.value))}
-                    className="w-full"
-                    min="1"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-1">
-                    Posición Diabl@ (10% descuento)
-                  </label>
-                  <Input
-                    type="number"
-                    value={devilPosition}
-                    onChange={(e) => setDevilPosition(Number(e.target.value))}
-                    className="w-full"
-                    min="1"
-                  />
-                </div>
+              {/* Mode Switch */}
+              <div className="flex items-center justify-between p-3 bg-muted/20 rounded-lg">
+                <span className="text-sm text-foreground">Modo Automático</span>
+                <Switch 
+                  checked={autoMode} 
+                  onCheckedChange={handleModeChange}
+                />
               </div>
               
+              {/* Manual Controls */}
+              {!autoMode && (
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-sm font-medium text-muted-foreground mb-1">
+                      Posición Sant@ (15% descuento)
+                    </label>
+                    <Input
+                      type="number"
+                      value={saintPosition}
+                      onChange={(e) => {
+                        setSaintPosition(Number(e.target.value));
+                        updateActivity();
+                      }}
+                      className="w-full"
+                      min="1"
+                      max="20"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-muted-foreground mb-1">
+                      Posición Diabl@ (10% descuento)
+                    </label>
+                    <Input
+                      type="number"
+                      value={devilPosition}
+                      onChange={(e) => {
+                        setDevilPosition(Number(e.target.value));
+                        updateActivity();
+                      }}
+                      className="w-full"
+                      min="1"
+                      max="20"
+                    />
+                  </div>
+                  
+                  <Button 
+                    onClick={() => handleSetPositions()}
+                    className="w-full bg-primary hover:bg-primary/90"
+                  >
+                    Actualizar Posiciones
+                  </Button>
+                </div>
+              )}
+              
+              {/* Random Generator Button */}
               <Button 
-                onClick={handleSetPositions}
-                className="w-full bg-primary hover:bg-primary/90"
+                onClick={generateRandomPositions}
+                variant="outline"
+                className="w-full"
               >
-                Actualizar Posiciones
+                🎲 Generar Posiciones Aleatorias
               </Button>
+              
+              {/* Current Positions Display */}
+              <div className="p-3 bg-primary/10 rounded-lg">
+                <p className="text-sm text-foreground">
+                  <strong>Posiciones Actuales:</strong><br/>
+                  Sant@: {saintPosition} | Diabl@: {devilPosition}
+                </p>
+              </div>
             </div>
 
             <div className="border-t border-border pt-4">

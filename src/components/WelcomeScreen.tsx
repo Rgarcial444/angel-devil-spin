@@ -4,18 +4,19 @@ import holyInfernoLogo from "@/assets/holy-inferno-logo.png";
 interface WelcomeScreenProps {
   onStartGame: () => void;
   onTitleClick?: () => void;
+  onAdminAccess?: () => void;
 }
 
-export const WelcomeScreen = ({ onStartGame, onTitleClick }: WelcomeScreenProps) => {
+export const WelcomeScreen = ({ onStartGame, onTitleClick, onAdminAccess }: WelcomeScreenProps) => {
   return (
-    <div className="min-h-screen bg-gradient-mystical flex flex-col items-center justify-center p-4 text-center">
-      <div className="max-w-sm w-full space-y-4 animate-fade-in-up">
-        {/* Holy Inferno Logo */}
-        <div className="mb-4">
+    <div className="min-h-screen bg-gradient-mystical flex flex-col items-center justify-center p-4 text-center relative">
+      <div className="max-w-sm w-full space-y-4 animate-fade-in-up relative z-10">
+        {/* Holy Inferno Logo - Background */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-20 -z-10">
           <img 
             src={holyInfernoLogo} 
             alt="Holy Inferno - Sant@ vs Diabl@" 
-            className="w-full max-w-xs mx-auto rounded-lg shadow-mystical animate-fade-in"
+            className="w-96 h-96 object-contain animate-fade-in"
           />
         </div>
         
@@ -57,6 +58,19 @@ export const WelcomeScreen = ({ onStartGame, onTitleClick }: WelcomeScreenProps)
           <div className="text-xs text-muted-foreground">VS</div>
           <div className="text-4xl text-primary animate-mystical-glow">😈</div>
         </div>
+        
+        {/* Admin Access Button - Discrete */}
+        {onAdminAccess && (
+          <div className="pt-8">
+            <Button 
+              onClick={onAdminAccess}
+              variant="ghost"
+              className="text-xs text-muted-foreground/50 hover:text-muted-foreground p-1 h-auto"
+            >
+              ⚙️
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
